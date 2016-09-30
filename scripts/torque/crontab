@@ -1,0 +1,2 @@
+# Torque sched dies periodically for no reason. Restart it every 5 minutes
+   */5  *  *  *  * nimbix /usr/local/scripts/torque/restart_sched.sh

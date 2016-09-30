@@ -1,3 +1,5 @@
+#!/bin/bash
+#
 # Copyright (c) 2016, Nimbix, Inc.
 # All rights reserved.
 #
@@ -25,23 +27,28 @@
 # The views and conclusions contained in the software and documentation are
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Nimbix, Inc.
+#
+# Author: Stephen Fox (stephen.fox@nimbix.net)
 
-FROM nimbix/centos-base:6
-MAINTAINER Nimbix, Inc.
+################################################################################
+# setup_torque.sh
+#
+# Setup (in persistent/staging mode):
+#  1. Install Torque 6.0.1 RPMs. These can be built from the source archive.
+#  2. Run jarvice.apps/torque/install.sh in staging mode
+#  3. (At job launch) This script should be called if you want to submit a job to torque via
+#  qsub or qrun in the current job environment.
+################################################################################
+:
 
-RUN yum install -y boost-devel libxml2-devel make openssl-devel rpm-build git
-RUN yum groupinstall -y 'Development Tools'
+for i in `cat /etc/JARVICE/nodes`; do
+    if [ "$i" != "$(hostname)" ]; then
+    	ssh -n -f $i "sudo /usr/local/scripts/torque/launch.sh"
+    else
+	sudo /usr/local/scripts/torque/launch.sh >>/tmp/torque-setup.log 2>&1
+    fi
+done
 
-WORKDIR /tmp
-RUN git clone -b 6.0.2 https://github.com/adaptivecomputing/torque.git
-WORKDIR /tmp/torque
-RUN ./autogen.sh
-RUN ./configure
-RUN make rpm
-RUN cp -r /root/rpmbuild/RPMS/x86_64 /home/nimbix/PKG
+sleep 3
 
-WORKDIR /home/nimbix/PKG
-RUN rpm -ivh *.rpm
-RUN rm -rf *.rpm
-
-ADD ./scripts /usr/local/scripts
+sudo service pbs_server restart >>/tmp/torque-setup.log 2>&1
