@@ -10,7 +10,7 @@ if [ "$MYHOST" = "JARVICE" ]; then
 	exit 1
 fi
 
-echo $MASTER >/var/spool/torque/server_name
+echo $MASTER | sudo tee /var/spool/torque/server_name
 
 service trqauthd start
 
