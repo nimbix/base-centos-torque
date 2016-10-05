@@ -65,4 +65,5 @@ sudo rm /var/spool/torque/mom_priv/config
 sudo touch /var/spool/torque/mom_priv/config
 echo "\$pbsserver $MASTER" |tee /var/spool/torque/mom_priv/config
 
-service pbs_mom start
+sudo service pbs_mom start
+sudo service trqauthd restart
