@@ -12,8 +12,6 @@ fi
 
 echo $MASTER | sudo tee /var/spool/torque/server_name
 
-service trqauthd start
-
 if [ $MYHOST = $MASTER ]; then
 
 	NP=`wc -l /etc/JARVICE/cores|awk '{print $1}'`
@@ -65,5 +63,5 @@ sudo rm /var/spool/torque/mom_priv/config
 sudo touch /var/spool/torque/mom_priv/config
 echo "\$pbsserver $MASTER" |tee /var/spool/torque/mom_priv/config
 
+sudo service trqauthd start
 sudo service pbs_mom start
-sudo service trqauthd restart
