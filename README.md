@@ -4,7 +4,7 @@ You can check the queue status with:
 
 `qstat -at`
 
-or submit a job from any node in the custer with:
+or submit a job from any node in the cluster with:
 
 `echo 'echo "hello world"' | qsub`
 
