@@ -29,11 +29,11 @@
 FROM nimbix/centos-base:6
 MAINTAINER Nimbix, Inc.
 
-RUN yum install -y boost-devel & \
-    libxml2-devel & \
-    make openssl-devel & \
-    rpm-build & \
-    git &\
+RUN yum install -y boost-devel \
+    libxml2-devel \
+    make openssl-devel \
+    rpm-build \
+    git \
     vixie-cron
 RUN yum groupinstall -y 'Development Tools'
 
