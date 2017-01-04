@@ -52,3 +52,14 @@ done
 sleep 3
 
 sudo service pbs_server restart >>/tmp/torque-setup.log 2>&1
+
+# Block until all nodes are ready
+NNODES=`cat /etc/JARVICE/nodes | wc -l`
+while [ 1 ]; do
+    READY=$(qnodes -a | grep "state =" | grep free | wc -l)
+    if [ $? -gt 0 ] || [ ${READY} -lt ${NNODES} ]; then
+        sleep 2
+    else
+        break
+    fi
+done

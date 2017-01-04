@@ -11,6 +11,12 @@ if [ "$MYHOST" = "JARVICE" ]; then
 fi
 
 echo $MASTER | sudo tee /var/spool/torque/server_name
+sudo rm /var/spool/torque/mom_priv/config
+sudo touch /var/spool/torque/mom_priv/config
+echo "\$pbsserver $MASTER" |tee /var/spool/torque/mom_priv/config
+
+sudo service trqauthd start
+sleep 1
 
 if [ $MYHOST = $MASTER ]; then
 
@@ -24,7 +30,10 @@ if [ $MYHOST = $MASTER ]; then
 	service pbs_server start >>/tmp/torque-setup.log 2>&1
 	service pbs_sched start >>/tmp/torque-setup.log 2>&1
 
+        sleep 5
+        
 	qmgr -e -c "delete queue jarvice"
+        qmgr -e -c "delete queue batch"
 	qmgr -e -c "create queue jarvice queue_type=execution"
 	qmgr -e -c "set queue jarvice resources_max.walltime = 10000:00:00"
 	qmgr -e -c "set queue jarvice resources_default.nodes = 1"
@@ -48,20 +57,20 @@ if [ $MYHOST = $MASTER ]; then
 	qmgr -e -c "set server log_keep_days = 7"
 	qmgr -e -c "set server next_job_number = 1"
 	qmgr -e -c "set server submit_hosts = `hostname`"
-	let NSLAVES=$NN-1
-	if [ $NSLAVES -gt 0 ]; then
-       	    # Allow all nodes to submit jobs
-            for i in `cat /etc/JARVICE/nodes | tail -n $NSLAVES`; do
-                qmgr -e -c "set server submit_hosts += $i"
-            done
-	fi
+        qmgr -e -c "set server allow_node_submit = True"
+        NNODES=`cat /etc/JARVICE/nodes | wc -l`
+        let NSLAVES=${NNODES}-1
+        for i in `tail -n ${NNODES} /etc/JARVICE/nodes`; do
+            qmgr -e -c "set server submit_hosts += ${i}"
+        done
+        # Set a cron task to restart the weak torque scheduler process every 5 mins
 	cat `dirname $0`/crontab | sudo tee -a /etc/crontab
 	sudo /etc/init.d/crond restart
 fi
 
-sudo rm /var/spool/torque/mom_priv/config
-sudo touch /var/spool/torque/mom_priv/config
-echo "\$pbsserver $MASTER" |tee /var/spool/torque/mom_priv/config
+# This must be running to start the services and modify the config
+sudo service trqauthd
+sleep 3
 
-sudo service trqauthd start
-sudo service pbs_mom start
+sudo service pbs_mom restart
+sleep 3
