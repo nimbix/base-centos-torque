@@ -34,19 +34,21 @@ RUN yum install -y boost-devel \
     make openssl-devel \
     rpm-build \
     git \
-    vixie-cron
-RUN yum groupinstall -y 'Development Tools'
+    vixie-cron && \
+    yum groupinstall -y 'Development Tools' && \
+    yum clean all
 
 WORKDIR /tmp
-RUN git clone -b 6.0.2 https://github.com/adaptivecomputing/torque.git
-WORKDIR /tmp/torque
-RUN ./autogen.sh
-RUN ./configure
-RUN make rpm
-RUN cp -r /root/rpmbuild/RPMS/x86_64 /home/nimbix/PKG
-
-WORKDIR /home/nimbix/PKG
-RUN rpm -ivh *.rpm
-RUN rm -rf *.rpm
+VOLUME /tmp
+RUN git clone -b 6.0.2 https://github.com/adaptivecomputing/torque.git && \
+    cd /tmp/torque && \
+    ./autogen.sh && \
+     ./configure && \
+     make rpm && \
+     cp -r /root/rpmbuild/RPMS/x86_64 /tmp/PKG && \
+     rm -rf /root/rpmbuild/RPMS/x86_64 && \
+     cd /tmp/PKG && \
+     rpm -ivh *.rpm && \
+     rm -rf *.rpm
 
 ADD ./scripts /usr/local/scripts
