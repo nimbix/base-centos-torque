@@ -69,7 +69,7 @@ if [ $MYHOST = $MASTER ]; then
 fi
 
 # This must be running to start the services and modify the config
-sudo service trqauthd
+sudo service trqauthd restart
 sleep 3
 
 sudo service pbs_mom restart
