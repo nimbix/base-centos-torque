@@ -13,9 +13,9 @@ rm -f /var/log/torque/*/*
 
 DOMAIN=`domainname`
 [ "$DOMAIN" = "(none)" ] && DOMAIN=localdomain
-MYHOST=`hostname`.$DOMAIN
+hostname | grep -q \. || hostname `hostname`.$DOMAIN
+MYHOST=`hostname`
 MASTER=`head -1 /etc/JARVICE/nodes`.$DOMAIN
-hostname $MYHOST
 
 if [ "$MYHOST" = "JARVICE.$DOMAIN" ]; then
     echo "Cannot run from persistent environment; must be ephemeral."
