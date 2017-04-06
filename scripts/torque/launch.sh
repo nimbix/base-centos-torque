@@ -13,7 +13,7 @@ rm -f /var/log/torque/*/*
 
 DOMAIN=`domainname`
 [ "$DOMAIN" = "(none)" ] && DOMAIN=localdomain
-hostname | grep -q \. || hostname `hostname`.$DOMAIN
+hostname | grep -q '\.' || hostname `hostname`.$DOMAIN
 MYHOST=`hostname`
 MASTER=`head -1 /etc/JARVICE/nodes`.$DOMAIN
 
