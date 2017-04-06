@@ -8,3 +8,8 @@ chkconfig trqauthd off
 chkconfig pbs_server off
 chkconfig pbs_sched off
 chkconfig pbs_mom off
+
+echo "Launch TORQUE on all nodes: /usr/local/scripts/torque/launch_all.sh"
+echo "OR"
+echo "Launch TORQUE nodes individually: /usr/local/scripts/torque/launch.sh"
+

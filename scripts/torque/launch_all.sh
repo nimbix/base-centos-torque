@@ -31,27 +31,17 @@
 # Author: Stephen Fox (stephen.fox@nimbix.net)
 
 ################################################################################
-# setup_torque.sh
+# launch_all.sh - Launch TORQUE server and slaves if not already running
 #
-# Setup (in persistent/staging mode):
-#  1. Install Torque 6.0.1 RPMs. These can be built from the source archive.
-#  2. Run jarvice.apps/torque/install.sh in staging mode
-#  3. (At job launch) This script should be called if you want to submit a job to torque via
+# This script should be called if you want to submit a job to torque via
 #  qsub or qrun in the current job environment.
 ################################################################################
-:
 
 for i in `cat /etc/JARVICE/nodes`; do
-    if [ "$i" != "$(hostname)" ]; then
-    	ssh -n -f $i "sudo /usr/local/scripts/torque/launch.sh"
-    else
-	sudo /usr/local/scripts/torque/launch.sh >>/tmp/torque-setup.log 2>&1
-    fi
+    ssh -n -f $i "sudo /usr/local/scripts/torque/launch.sh"
 done
 
-sleep 3
-
-sudo service pbs_server restart >>/tmp/torque-setup.log 2>&1
+sleep 5
 
 # Block until all nodes are ready
 NNODES=`cat /etc/JARVICE/nodes | wc -l`

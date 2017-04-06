@@ -1,4 +1,9 @@
-This is an isolated TORQUE cluster. To start the TORQUE cluster, first call `/usr/local/scripts/torque/setup_torque.sh`
+This is an isolated TORQUE cluster.
+
+Launch TORQUE on all nodes: /usr/local/scripts/torque/launch_all.sh
+OR
+Launch TORQUE nodes individually: /usr/local/scripts/torque/launch.sh
+
 
 You can check the queue status with:
 

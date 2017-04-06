@@ -29,6 +29,9 @@
 FROM nimbix/centos-base:6
 MAINTAINER Nimbix, Inc.
 
+WORKDIR /tmp
+VOLUME /tmp
+
 ADD ./scripts /usr/local/scripts
 
 RUN yum install -y boost-devel \
@@ -38,11 +41,8 @@ RUN yum install -y boost-devel \
     git \
     vixie-cron && \
     yum groupinstall -y 'Development Tools' && \
-    yum clean all
-
-WORKDIR /tmp
-VOLUME /tmp
-RUN git clone -b 6.0.2 https://github.com/adaptivecomputing/torque.git && \
+    yum clean all && \
+    git clone -b 6.0.2 https://github.com/adaptivecomputing/torque.git && \
     cd /tmp/torque && \
     ./autogen.sh && \
     ./configure && \
