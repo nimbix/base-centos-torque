@@ -29,6 +29,8 @@
 FROM nimbix/centos-base:6
 MAINTAINER Nimbix, Inc.
 
+ADD ./scripts /usr/local/scripts
+
 RUN yum install -y boost-devel \
     libxml2-devel \
     make openssl-devel \
@@ -43,12 +45,12 @@ VOLUME /tmp
 RUN git clone -b 6.0.2 https://github.com/adaptivecomputing/torque.git && \
     cd /tmp/torque && \
     ./autogen.sh && \
-     ./configure && \
-     make rpm && \
-     cp -r /root/rpmbuild/RPMS/x86_64 /tmp/PKG && \
-     rm -rf /root/rpmbuild/RPMS/x86_64 && \
-     cd /tmp/PKG && \
-     rpm -ivh *.rpm && \
-     rm -rf *.rpm
+    ./configure && \
+    make rpm && \
+    cp -r /root/rpmbuild/RPMS/x86_64 /tmp/PKG && \
+    rm -rf /root/rpmbuild/RPMS/x86_64 && \
+    cd /tmp/PKG && \
+    rpm -ivh *.rpm && \
+    rm -rf *.rpm && \
+    /usr/local/scripts/torque/install.sh
 
-ADD ./scripts /usr/local/scripts
