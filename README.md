@@ -15,6 +15,7 @@ Launch TORQUE nodes individually:
 ------------------------------------------------------------------------------
 
 You can check the status of the nodes with:
+
 `pbsnodes`
 
 You can check the queue status with:
