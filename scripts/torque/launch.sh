@@ -25,7 +25,7 @@ fi
 if [ "$ACTION" = "start" ]; then
     test_service=pbs_mom
     [ "$MYHOST" = "$MASTER" ] && test_service=pbs_server
-    service $test_service status && \
+    service $test_service status 2>&1 >/dev/null && \
         echo "TORQUE already appears to be running on $MYHOST!" && \
         exit 1
 fi
