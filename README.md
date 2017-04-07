@@ -1,8 +1,18 @@
 This is an isolated TORQUE cluster.
 
-Launch TORQUE on all nodes: /usr/local/scripts/torque/launch_all.sh
+------------------------------------------------------------------------------
+
+Launch TORQUE on all nodes:
+
+`/usr/local/scripts/torque/launch_all.sh`
+
 OR
-Launch TORQUE nodes individually: /usr/local/scripts/torque/launch.sh
+
+Launch TORQUE nodes individually:
+
+`/usr/local/scripts/torque/launch.sh`
+
+------------------------------------------------------------------------------
 
 You can check the status of the nodes with:
 `pbsnodes`
