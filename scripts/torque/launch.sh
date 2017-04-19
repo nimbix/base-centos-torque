@@ -84,9 +84,9 @@ if [ "$MYHOST" = "$MASTER" ]; then
     done
 
     # Set a cron task to restart the weak torque scheduler process every 5 mins
-    grep -q torque/restart_sched.sh /etc/crontab || \
-        cat `dirname $0`/crontab | tee -a /etc/crontab && \
-        /etc/init.d/crond restart
+    #grep -q torque/restart_sched.sh /etc/crontab || \
+    #    cat `dirname $0`/crontab | tee -a /etc/crontab && \
+    #    /etc/init.d/crond restart
 fi
 
 [ "$MYHOST" != "$MASTER" ] && sleep 3
