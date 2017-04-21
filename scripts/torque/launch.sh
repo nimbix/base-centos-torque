@@ -82,7 +82,7 @@ if [ "$MYHOST" = "$MASTER" ]; then
     qmgr -e -c "set server allow_node_submit = True"
     NNODES=`cat /etc/JARVICE/nodes | wc -l`
     let NSLAVES=${NNODES}-1
-    for i in `tail -n ${NNODES} /etc/JARVICE/nodes`; do
+    for i in `tail -n ${NSLAVES} /etc/JARVICE/nodes`; do
         qmgr -e -c "set server managers += nimbix@${i}.$DOMAIN"
         qmgr -e -c "set server operators += nimbix@${i}.$DOMAIN"
         qmgr -e -c "set server submit_hosts += ${i}.$DOMAIN"
