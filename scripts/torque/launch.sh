@@ -22,6 +22,9 @@ if [ "$MYHOST" = "JARVICE.$DOMAIN" ]; then
     exit 1
 fi
 
+# TORQUE complains when referenced host name isn't listed first
+sed -r -i -e 's/(.+) (.+) (.+.localdomain)/\1 \3 \2/' /etc/hosts
+
 if [ "$ACTION" = "start" ]; then
     test_service=pbs_mom
     [ "$MYHOST" = "$MASTER" ] && test_service=pbs_server
