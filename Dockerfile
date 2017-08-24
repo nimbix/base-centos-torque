@@ -26,7 +26,7 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Nimbix, Inc.
 
-FROM nimbix/centos-base:6
+FROM centos:6.8
 MAINTAINER Nimbix, Inc.
 
 WORKDIR /tmp
@@ -53,4 +53,9 @@ RUN yum install -y boost-devel \
     rpm -ivh *.rpm && \
     rm -rf *.rpm && \
     /usr/local/scripts/torque/install.sh
+
+# Set up environment for JARVICE
+RUN curl -H 'Cache-Control: no-cache' \
+        https://raw.githubusercontent.com/nimbix/image-common/$GIT_BRANCH/install-nimbix.sh \
+        | bash
 
