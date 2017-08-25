@@ -29,6 +29,8 @@
 FROM centos:6.8
 MAINTAINER Nimbix, Inc.
 
+ENV GIT_BRANCH master
+
 WORKDIR /tmp
 VOLUME /tmp
 
