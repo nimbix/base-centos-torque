@@ -60,5 +60,5 @@ RUN yum install -y boost-devel \
 # Set up environment for JARVICE
 RUN curl -H 'Cache-Control: no-cache' \
         https://raw.githubusercontent.com/nimbix/image-common/$GIT_BRANCH/install-nimbix.sh \
-        | bash -s -- --skip-os-pkg-update
+        | bash -s -- --image-common-branch $GIT_BRANCH --skip-os-pkg-update
 
