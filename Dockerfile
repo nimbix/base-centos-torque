@@ -29,7 +29,8 @@
 FROM centos:6.8
 MAINTAINER Nimbix, Inc.
 
-ENV GIT_BRANCH master
+#ENV GIT_BRANCH master
+ENV GIT_BRANCH testing
 
 WORKDIR /tmp
 VOLUME /tmp
@@ -59,5 +60,5 @@ RUN yum install -y boost-devel \
 # Set up environment for JARVICE
 RUN curl -H 'Cache-Control: no-cache' \
         https://raw.githubusercontent.com/nimbix/image-common/$GIT_BRANCH/install-nimbix.sh \
-        | bash
+        | bash -s -- --skip-os-pkg-update
 
