@@ -1,5 +1,20 @@
 #!/bin/bash
 
+svc()
+{
+    if [ -d /etc/systemd ]; then
+        systemctl "$2" "$1"
+    else
+        service "$1" "$2"
+    fi
+}
+
+if [ -d /var/spool/torque ]; then
+    SPOOL=/var/spool/torque
+else
+    SPOOL=/var/lib/torque
+fi
+
 if [ "$(whoami)" != "root" ]; then
     echo "$0 must be executed with root privileges!"
     exit 1
@@ -28,15 +43,15 @@ sed -r -i -e 's/(.+) (.+) (.+.localdomain)/\1 \3 \2/' /etc/hosts
 if [ "$ACTION" = "start" ]; then
     test_service=pbs_mom
     [ "$MYHOST" = "$MASTER" ] && test_service=pbs_server
-    service $test_service status 2>&1 >/dev/null && \
+    svc status $test_service status 2>&1 >/dev/null && \
         echo "TORQUE already appears to be running on $MYHOST!" && \
         exit 1
 fi
 
-echo "$MASTER" | tee /var/spool/torque/server_name
-echo "\$pbsserver $MASTER" | tee /var/spool/torque/mom_priv/config
+echo "$MASTER" | tee $SPOOL/server_name
+echo "\$pbsserver $MASTER" | tee $SPOOL/mom_priv/config
 
-service trqauthd $ACTION
+svc trqauthd $ACTION
 sleep 1
 
 if [ "$MYHOST" = "$MASTER" ]; then
@@ -44,13 +59,13 @@ if [ "$MYHOST" = "$MASTER" ]; then
     NP=`wc -l /etc/JARVICE/cores|awk '{print $1}'`
     NN=`wc -l /etc/JARVICE/nodes|awk '{print $1}'`
     let NP=$NP/$NN
-    rm -f /var/spool/torque/server_priv/nodes
+    rm -f $SPOOL/server_priv/nodes
     for i in `cat /etc/JARVICE/nodes`; do
-        echo "$i.$DOMAIN np=$NP" >> /var/spool/torque/server_priv/nodes
+        echo "$i.$DOMAIN np=$NP" >> $SPOOL/server_priv/nodes
     done
 
-    service pbs_sched $ACTION
-    service pbs_server $ACTION
+    svc pbs_sched $ACTION
+    svc pbs_server $ACTION
 
     sleep 1
 
@@ -95,5 +110,5 @@ if [ "$MYHOST" = "$MASTER" ]; then
 fi
 
 [ "$MYHOST" != "$MASTER" ] && sleep 3
-service pbs_mom $ACTION
+svc pbs_mom $ACTION
 

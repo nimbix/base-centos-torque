@@ -7,7 +7,8 @@ yum install -y boost-devel \
     make openssl-devel \
     rpm-build \
     git \
-    vixie-cron
+    vixie-cron \
+    openmpi-devel
 yum groupinstall -y 'Development Tools'
 yum clean all
 cd /tmp
