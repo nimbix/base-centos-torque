@@ -26,7 +26,7 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Nimbix, Inc.
 
-FROM nimbix/centos-base:6
+FROM nvidia/cuda-ppc64le:8.0-cudnn6-devel-centos7
 MAINTAINER Nimbix, Inc.
 
 WORKDIR /tmp
@@ -37,4 +37,15 @@ COPY build_torque.sh /tmp/build_torque.sh
 
 RUN /tmp/build_torque.sh
 RUN /usr/local/scripts/torque/install.sh
+
+RUN curl -H 'Cache-Control: no-cache' \
+    https://raw.githubusercontent.com/nimbix/image-common/master/install-nimbix.sh \
+    | bash -s -- --setup-nimbix-desktop
+
+# Expose port 22 for local JARVICE emulation in docker
+EXPOSE 22
+
+# for standalone use
+EXPOSE 5901
+EXPOSE 443
 
