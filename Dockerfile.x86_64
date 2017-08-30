@@ -32,8 +32,6 @@ MAINTAINER Nimbix, Inc.
 WORKDIR /tmp
 VOLUME /tmp
 
-ADD ./scripts /usr/local/scripts
-
 RUN curl -H 'Cache-Control: no-cache' \
     https://raw.githubusercontent.com/nimbix/image-common/master/install-nimbix.sh \
     | bash -s -- --setup-nimbix-desktop
@@ -45,6 +43,9 @@ EXPOSE 22
 EXPOSE 5901
 EXPOSE 443
 
-RUN yum -y install torque-server torque-scheduler torque-client && yum clean all
+ADD ./scripts /usr/local/scripts
+
+RUN yum -y install openmpi-devel torque-server torque-scheduler torque-client && yum clean all
 RUN /usr/local/scripts/torque/install7.sh
+RUN pbs_server -f -t create
 
