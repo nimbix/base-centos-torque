@@ -17,7 +17,7 @@ cd /tmp
 git clone -b $torque_version https://github.com/adaptivecomputing/torque.git
 cd /tmp/torque
 ./autogen.sh
-./configure
+./configure --prefix=/usr
 make rpm
 cp -r /root/rpmbuild/RPMS/$(uname -m) /tmp/PKG
 rm -rf /root/rpmbuild/RPMS/$(uname -m)
