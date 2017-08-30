@@ -51,6 +51,12 @@ fi
 echo "$MASTER" | tee $SPOOL/server_name
 echo "\$pbsserver $MASTER" | tee $SPOOL/mom_priv/config
 
+if [ -d /etc/munge && ! -f /etc/munge/munge.key ]; then
+    dd if=/home/nimbix/.ssh/id_rsa of=/etc/munge/munge.key bs=1024 count=1
+    chown munge /etc/munge/munge.key
+    chmod 400 /etc/munge/munge.key
+    svc munge start
+fi
 svc trqauthd $ACTION
 sleep 1
 
