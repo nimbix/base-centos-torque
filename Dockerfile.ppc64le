@@ -49,3 +49,6 @@ EXPOSE 22
 EXPOSE 5901
 EXPOSE 443
 
+# CUDA runtime support for JARVICE container engine on ppc64le
+RUN mkdir -p /usr/lib/powerpc64le-linux-gnu && echo "/usr/lib/powerpc64le-linux-gnu" >/etc/ld.so.conf.d/powerpc64le-linux-gnu.conf
+
