@@ -38,7 +38,7 @@
 ################################################################################
 
 # Try to connect each second, up to 60 times before we give up..
-echo "ConnectionAttempts 60" >>~/.ssh/config
+#echo "ConnectionAttempts 60" ~/.ssh/config
 toolsdir=/usr/lib/JARVICE/tools
 [ -d /usr/local/JARVICE/tools ] && toolsdir=/usr/local/JARVICE/tools
 $toolsdir/bin/python_ssh_test 60
