@@ -2,11 +2,11 @@
 
 svc()
 {
-    if [ -d /etc/systemd ]; then
-        systemctl "$2" "$1"
-    else
+    #if [ -d /etc/systemd ]; then
+        #systemctl "$2" "$1"
+    #else
         service "$1" "$2"
-    fi
+    #fi
 }
 
 if [ -d /var/spool/torque ]; then
