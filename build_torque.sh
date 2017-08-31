@@ -1,5 +1,7 @@
 #!/bin/bash
 
+torque_version=6.0.4
+
 set -x
 set -e
 yum install -y boost-devel \
@@ -12,10 +14,10 @@ yum install -y boost-devel \
 yum groupinstall -y 'Development Tools'
 yum clean all
 cd /tmp
-git clone -b 6.0.2 https://github.com/adaptivecomputing/torque.git
+git clone -b $torque_version https://github.com/adaptivecomputing/torque.git
 cd /tmp/torque
 ./autogen.sh
-./configure
+./configure --prefix=/usr
 make rpm
 cp -r /root/rpmbuild/RPMS/$(uname -m) /tmp/PKG
 rm -rf /root/rpmbuild/RPMS/$(uname -m)

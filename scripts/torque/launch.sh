@@ -43,7 +43,7 @@ sed -r -i -e 's/(.+) (.+) (.+.localdomain)/\1 \3 \2/' /etc/hosts
 if [ "$ACTION" = "start" ]; then
     test_service=pbs_mom
     [ "$MYHOST" = "$MASTER" ] && test_service=pbs_server
-    svc status $test_service status 2>&1 >/dev/null && \
+    svc $test_service status 2>&1 >/dev/null && \
         echo "TORQUE already appears to be running on $MYHOST!" && \
         exit 1
 fi
