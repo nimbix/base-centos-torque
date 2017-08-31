@@ -44,6 +44,7 @@ toolsdir=/usr/lib/JARVICE/tools
 $toolsdir/bin/python_ssh_test 60
 
 for i in `cat /etc/JARVICE/nodes`; do
+    echo "TORQUE - Launching node: $i"
     ssh -n -f $i "sudo /usr/local/scripts/torque/launch.sh"
 done
 
@@ -55,7 +56,9 @@ while [ 1 ]; do
     READY=$(qnodes -a | grep "state =" | grep free | wc -l)
     if [ $? -gt 0 ] || [ ${READY} -lt ${NNODES} ]; then
         sleep 2
+        echo "TORQUE - $READY of $NNODES nodes are ready..."
     else
+        echo "TORQUE - All nodes ($NNODES) are ready..."
         break
     fi
 done
