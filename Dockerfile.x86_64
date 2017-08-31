@@ -45,6 +45,6 @@ EXPOSE 443
 
 ADD ./scripts /usr/local/scripts
 
-RUN yum -y install openmpi-devel torque-server torque-scheduler torque-client && yum clean all
+RUN yum -y install openmpi-devel torque-mom torque-server torque-scheduler torque-client && yum clean all
 RUN /usr/local/scripts/torque/install7.sh
 
