@@ -37,7 +37,14 @@
 #  qsub or qrun in the current job environment.
 ################################################################################
 
+# Try to connect each second, up to 60 times before we give up..
+#echo "ConnectionAttempts 60" ~/.ssh/config
+toolsdir=/usr/lib/JARVICE/tools
+[ -d /usr/local/JARVICE/tools ] && toolsdir=/usr/local/JARVICE/tools
+$toolsdir/bin/python_ssh_test 60
+
 for i in `cat /etc/JARVICE/nodes`; do
+    echo "TORQUE - Launching node: $i"
     ssh -n -f $i "sudo /usr/local/scripts/torque/launch.sh"
 done
 
@@ -49,7 +56,9 @@ while [ 1 ]; do
     READY=$(qnodes -a | grep "state =" | grep free | wc -l)
     if [ $? -gt 0 ] || [ ${READY} -lt ${NNODES} ]; then
         sleep 2
+        echo "TORQUE - $READY of $NNODES nodes are ready..."
     else
+        echo "TORQUE - All nodes ($NNODES) are ready..."
         break
     fi
 done
