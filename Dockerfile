@@ -26,7 +26,7 @@
 # those of the authors and should not be interpreted as representing official
 # policies, either expressed or implied, of Nimbix, Inc.
 
-FROM centos:6
+FROM centos:7
 MAINTAINER Nimbix, Inc.
 
 WORKDIR /tmp
