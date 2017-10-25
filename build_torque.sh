@@ -1,16 +1,19 @@
 #!/bin/bash
 
 torque_version=6.1.2
+#EXP_DEBUG="-d"
 
 set -x
 set -e
+
 yum install -y boost-devel \
     libxml2-devel \
     make openssl-devel \
     rpm-build \
     git \
     vixie-cron \
-    openmpi-devel
+    openmpi-devel \
+    expect
 yum groupinstall -y 'Development Tools'
 yum clean all
 cd /tmp
@@ -30,6 +33,15 @@ make install
 for i in contrib/systemd/*.service; do
     ./buildutils/install-sh -m 644 $i /usr/lib/systemd/system/$(basename $i)
 done
+expect $EXP_DEBUG -c "
+    spawn ./torque.setup root
+    expect {
+        \"y/(n)?\" {
+            send \"y\r\"
+        }
+    }
+    catch wait result
+    "
 cd /tmp
 rm -rf torque
 
