@@ -84,7 +84,8 @@ if [ "$MYHOST" = "$MASTER" ]; then
     qmgr -e -c "set queue jarvice enabled = True"
     qmgr -e -c "set queue jarvice started = True"
     qmgr -e -c "set server scheduling = True"
-    qmgr -e -c "set server managers = nimbix@$MYHOST"
+    qmgr -e -c "set server managers += root@$MYHOST"
+    qmgr -e -c "set server managers += nimbix@$MYHOST"
     qmgr -e -c "set server operators = nimbix@$MYHOST"
     qmgr -e -c "set server default_queue = jarvice"
     qmgr -e -c "set server log_events = 511"
@@ -104,6 +105,7 @@ if [ "$MYHOST" = "$MASTER" ]; then
     NNODES=`cat /etc/JARVICE/nodes | wc -l`
     let NSLAVES=${NNODES}-1
     for i in `tail -n ${NSLAVES} /etc/JARVICE/nodes`; do
+        qmgr -e -c "set server managers += root@${i}.$DOMAIN"
         qmgr -e -c "set server managers += nimbix@${i}.$DOMAIN"
         qmgr -e -c "set server operators += nimbix@${i}.$DOMAIN"
         qmgr -e -c "set server submit_hosts += ${i}.$DOMAIN"
