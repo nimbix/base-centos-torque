@@ -32,6 +32,10 @@ MAINTAINER Nimbix, Inc.
 WORKDIR /tmp
 VOLUME /tmp
 
+# Update SERIAL_NUMBER to force rebuild of all layers (don't use cached layers)
+ARG SERIAL_NUMBER
+ENV SERIAL_NUMBER ${SERIAL_NUMBER:-20171111.1121}
+
 ADD ./scripts /usr/local/scripts
 COPY build_torque.sh /tmp/build_torque.sh
 
