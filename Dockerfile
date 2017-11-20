@@ -42,6 +42,9 @@ COPY build_torque.sh /tmp/build_torque.sh
 RUN /tmp/build_torque.sh
 RUN /usr/local/scripts/torque/install.sh
 
+ARG SERIAL_NUMBER_IMAGE_COMMON
+ENV SERIAL_NUMBER_IMAGE_COMMON ${SERIAL_NUMBER_IMAGE_COMMON:-20171120.1737}
+
 RUN curl -H 'Cache-Control: no-cache' \
     https://raw.githubusercontent.com/nimbix/image-common/master/install-nimbix.sh \
     | bash -s -- --setup-nimbix-desktop
