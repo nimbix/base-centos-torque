@@ -2,11 +2,11 @@
 
 svc()
 {
-    #if [ -d /etc/systemd ]; then
-        #systemctl "$2" "$1"
-    #else
+    if [ -d /etc/systemd ]; then
+        systemctl "$2" "$1"
+    else
         service "$1" "$2"
-    #fi
+    fi
 }
 
 if [ -d /var/spool/torque ]; then
@@ -23,7 +23,7 @@ fi
 ACTION=start
 [ "$1" = "restart" ] && ACTION=restart
 
-# remove logs
+# remove logs, TODO?
 rm -f /var/log/torque/*/*
 
 DOMAIN=`domainname`
@@ -38,7 +38,7 @@ if [ "$MYHOST" = "JARVICE.$DOMAIN" ]; then
 fi
 
 # TORQUE complains when referenced host name isn't listed first
-sed -r -i -e 's/(.+) (.+) (.+.localdomain)/\1 \3 \2/' /etc/hosts
+#XXXX sed -r -i -e 's/(.+) (.+) (.+.localdomain)/\1 \3 \2/' /etc/hosts
 
 if [ "$ACTION" = "start" ]; then
     test_service=pbs_mom

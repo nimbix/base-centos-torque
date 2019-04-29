@@ -15,10 +15,13 @@ yum install -y boost-devel \
     vixie-cron \
     openmpi-devel \
     expect
+
 yum groupinstall -y 'Development Tools'
 yum clean all
+
 cd /tmp
 git clone -b $torque_version https://github.com/adaptivecomputing/torque.git
+
 cd /tmp/torque
 ./autogen.sh
 ./configure --prefix=/usr
@@ -32,9 +35,12 @@ cd /tmp/torque
 make all
 make install
 /sbin/ldconfig
+
+
 for i in contrib/systemd/*.service; do
     ./buildutils/install-sh -m 644 $i /usr/lib/systemd/system/$(basename $i)
 done
+
 cat <<-EOF >>/etc/services
 # Standard PBS services
 pbs           15001/tcp           # pbs server (pbs_server)
@@ -48,6 +54,7 @@ pbs_sched     15004/udp           # scheduler
 trqauthd      15005/tcp           # authorization daemon
 trqauthd      15005/udp           # authorization daemon
 EOF
+
 expect $EXP_DEBUG -c "
     spawn ./torque.setup $torque_user
     expect {

@@ -39,9 +39,9 @@
 
 # Try to connect each second, up to 60 times before we give up..
 #echo "ConnectionAttempts 60" ~/.ssh/config
-toolsdir=/usr/lib/JARVICE/tools
-[ -d /usr/local/JARVICE/tools ] && toolsdir=/usr/local/JARVICE/tools
-$toolsdir/bin/python_ssh_test 60
+#toolsdir=/usr/lib/JARVICE/tools
+#[ -d /usr/local/JARVICE/tools ] && toolsdir=/usr/local/JARVICE/tools
+/usr/local/scripts/python_ssh_test 60
 
 for i in `cat /etc/JARVICE/nodes`; do
     echo "TORQUE - Launching node: $i"

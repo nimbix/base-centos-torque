@@ -34,18 +34,10 @@ VOLUME /tmp
 
 # Update SERIAL_NUMBER to force rebuild of all layers (don't use cached layers)
 ARG SERIAL_NUMBER
-ENV SERIAL_NUMBER ${SERIAL_NUMBER:-20171115.1110}
+ENV SERIAL_NUMBER ${SERIAL_NUMBER:-20190427.1000}
 
-ADD ./scripts /usr/local/scripts
+COPY scripts /usr/local/scripts
 COPY build_torque.sh /tmp/build_torque.sh
 
 RUN /tmp/build_torque.sh
 RUN /usr/local/scripts/torque/install.sh
-
-ARG SERIAL_NUMBER_IMAGE_COMMON
-ENV SERIAL_NUMBER_IMAGE_COMMON ${SERIAL_NUMBER_IMAGE_COMMON:-20171120.1737}
-
-RUN curl -H 'Cache-Control: no-cache' \
-    https://raw.githubusercontent.com/nimbix/image-common/master/install-nimbix.sh \
-    | bash -s -- --setup-nimbix-desktop
-
